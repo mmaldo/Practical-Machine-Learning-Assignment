@@ -783,7 +783,7 @@ cmSVM</code></pre>
 ## Detection Prevalence   0.3009   0.1799   0.1932   0.1541   0.1718
 ## Balanced Accuracy      0.9839   0.9355   0.9549   0.9394   0.9615</code></pre>
 <p>The decsion tree has rather poor performance so we’ll move on to using an SVM for our final test set.</p>
-<p>Next we’ll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-95% range in line with our testing set.</p>
+<p>Next we’ll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-93% range in line with our testing set.</p>
 <pre class="r"><code>predict(modelSVM,tidyTest)</code></pre>
 <pre><code>##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
 ##  B  A  A  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
