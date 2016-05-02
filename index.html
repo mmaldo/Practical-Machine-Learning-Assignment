@@ -710,7 +710,8 @@ inTrain &lt;- createDataPartition(y=tidyTrain$classe, p = 0.7, list = FALSE)
 training &lt;- tidyTrain[inTrain,]
 testing &lt;- tidyTrain[-inTrain,]</code></pre>
 <p>We’ll first train a Decision Tree and an SVM.</p>
-<pre class="r"><code>## Training a Model
+<pre class="r"><code>set.seed(353)
+## Training a Model
 modFitDT &lt;- train(classe~., data = training, method =&quot;rpart&quot;)</code></pre>
 <pre><code>## Loading required package: rpart</code></pre>
 <pre class="r"><code>predDT &lt;- predict(modFitDT,testing)
@@ -788,7 +789,7 @@ cmSVM</code></pre>
 <pre><code>##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 
 ##  B  A  A  A  A  E  D  B  A  A  B  C  B  A  E  E  A  B  B  B 
 ## Levels: A B C D E</code></pre>
-<p>This would also agree with the result of the quiz which is 18/20 correct.</p>
+<p>This would also agree with the result of the quiz which is 19/20 correct.</p>
 </div>
 </div>
 

@@ -90,6 +90,7 @@ testing <- tidyTrain[-inTrain,]
 ```
  We'll first train a Decision Tree and an SVM.
 ```{r,cache=FALSE}
+set.seed(353)
 ## Training a Model
 modFitDT <- train(classe~., data = training, method ="rpart")
 predDT <- predict(modFitDT,testing)
@@ -109,7 +110,7 @@ Next we'll predict on our validation set which we will submit for grading. I est
 predict(modelSVM,tidyTest)
 
 ```
-This would also agree with the result of the quiz which is 18/20 correct.
+This would also agree with the result of the quiz which is 19/20 correct.
 
 
 
