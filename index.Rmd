@@ -13,18 +13,21 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ## Load in libraries that will be needed
+
 ```{r}
 library(caret)
 library(e1071)
 ```
+
 ## Read in the data sets
 
 ```{r}
 train<-read.csv('pml-training.csv')
 test<-read.csv('pml-testing.csv')
 ```
-## Cleaning up the data sets
-## Exploring the training set
+
+
+## Exploring the training set and cleaning up the data sets
 
 Let's start by looking at the different columns based off the "str" command.
 
@@ -35,7 +38,9 @@ head(train)
 names(train)
 str(train,list.len=999)
 ```
+
 ## Remove the Columns that are not needed
+
 ```{r}
 tidyTrain<-train[,8:length(names(train))]
 tidyTest<-test[,8:length(names(test))]
@@ -88,7 +93,9 @@ inTrain <- createDataPartition(y=tidyTrain$classe, p = 0.7, list = FALSE)
 training <- tidyTrain[inTrain,]
 testing <- tidyTrain[-inTrain,]
 ```
- We'll first train a Decision Tree and an SVM.
+ 
+ We'll first train a Decision Tree, SVM, Boosting using the GBM package, a parallelized Random Forest and not parallelized random forest.
+ 
 ```{r,cache=FALSE}
 set.seed(353)
 ## Training a Model
@@ -97,21 +104,71 @@ predDT <- predict(modFitDT,testing)
 cmDT <- confusionMatrix(predDT, testing$classe)
 cmDT
 
+modFitGBM <- train(classe~., data = training, method ="gbm")
+predGBM <- predict(modFitGBM,testing)
+cmGBM <- confusionMatrix(predGBM, testing$classe)
+cmGBM
+
+modFit <- train(classe~., data = training, method ="parRF", prox = TRUE)
+pred <- predict(modFit,testing)
+cmRF <- confusionMatrix(pred, testing$classe)
+cmRF
+
+modFitRFNonPar <- train(classe~., data = training, method ="rf", prox = TRUE)
+pred <- predict(modFit,testing)
+cmRF <- confusionMatrix(pred, testing$classe)
+cmRF
 
 modelSVM <- svm(classe~ ., data = training)
 predSVM <- predict(modelSVM,testing)
 cmSVM <- confusionMatrix(predSVM, testing$classe)
 cmSVM
 ```
-The decsion tree has rather poor performance so we'll move on to using an SVM for our final test set.
 
-Next we'll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-93% range in line with our testing set.
+The decsion tree has rather poor performance so we'll move on to using an SVM,GBM or Random Forest for our final test set. The two Random Forests should have similar performance. The only difference between the parallelized Random Forest and Random Forest model are one uses parallel computation.
+
+Next we'll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-95% range for the SVM, 99% for the Random FOrest,94%-96% for the GBM  and 45% for the Decision Tree. Given the higher out of sample accuracy of the Random Forest model I will use that model for the final predicitons and submission. These estimates were validated with the following predicitons on the final test set.
+
+
+## SVM Predicitons
 ```{r}
 predict(modelSVM,tidyTest)
 
 ```
+
 This would also agree with the result of the quiz which is 19/20 correct.
 
+## Random Forest Predicitons
+```{r}
+predict(modFitRFNonPar,tidyTest)
 
+```
 
+```{r}
+predict(modFit,tidyTest)
+
+```
+
+The Random Forest preformed quite well with 20 out of 20 correct.
+
+## GBM Predicitons
+
+```{r}
+predict(modFitGBM,tidyTest)
+```
+
+The GBM also ppreformed quite well with 20 out of 20 correct.
+
+## Decision Tree Predicitons
+
+```{r}
+predict(modFitDT,tidyTest)
+
+```
+
+The Decision Tree preformed quite poorly with 8 out of 20 correct.
+
+## Conclusion
+
+The Random Forest is the highest preforming model on the data set. Further work can be put into preprocessiong the data and reducing the dimensiaonlity of the data set to see if training time can be improved for the models that take long to train. The fastest training time with an above 90% accuracy was done by the Support Vector Machine and provides a good trade off of training time and accuracy.
 
