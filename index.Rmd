@@ -29,9 +29,9 @@ test<-read.csv('pml-testing.csv')
 
 ## Exploring the training set and cleaning up the data sets
 
-Let's start by looking at the different columns based off the "str" command.
+Let's start by looking at the different columns.
 
-I will begin by eleiminating the variables with little data to use for predicting the class. I will do this to both the testing and the training set to prepare for the upcoming building and testing of the models.These columns inlucde a lot of blanks and "NA" entries. This is shown with the "str" command below.
+I will begin by eleiminating the variables with little data to use for predicting the class. I will do this to both the testing and the training set to prepare for the upcoming building and testing of the models.These columns inlucde a lot of blanks and "NA" entries. This is shown with the "str" and the "head" command below.
 
 ```{r}
 head(train)
@@ -94,7 +94,7 @@ training <- tidyTrain[inTrain,]
 testing <- tidyTrain[-inTrain,]
 ```
  
- We'll first train a Decision Tree, SVM, Boosting using the GBM package, a parallelized Random Forest and not parallelized random forest.
+ We'll first train a Decision Tree, SVM, Boosting using the GBM package, a parallelized Random Forest and a non parallelized random forest.
  
 ```{r,cache=FALSE}
 set.seed(353)
@@ -104,7 +104,7 @@ predDT <- predict(modFitDT,testing)
 cmDT <- confusionMatrix(predDT, testing$classe)
 cmDT
 
-modFitGBM <- train(classe~., data = training, method ="gbm")
+modFitGBM <- train(classe~., data = training, method ="gbm",verbose = FALSE)
 predGBM <- predict(modFitGBM,testing)
 cmGBM <- confusionMatrix(predGBM, testing$classe)
 cmGBM
