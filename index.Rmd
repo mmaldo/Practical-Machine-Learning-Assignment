@@ -94,7 +94,7 @@ training <- tidyTrain[inTrain,]
 testing <- tidyTrain[-inTrain,]
 ```
  
- We'll first train a Decision Tree, SVM, Boosting using the GBM package, a parallelized Random Forest and a non parallelized random forest.
+ We'll first train a Decision Tree, SVM, Boosting using the GBM package, a parallelized Random Forest and a non parallelized Random Forest.
  
 ```{r,cache=FALSE}
 set.seed(353)
@@ -127,7 +127,7 @@ cmSVM
 
 The decsion tree has rather poor performance so we'll move on to using an SVM,GBM or Random Forest for our final test set. The two Random Forests should have similar performance. The only difference between the parallelized Random Forest and Random Forest model are one uses parallel computation.
 
-Next we'll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-95% range for the SVM, 99% for the Random FOrest,94%-96% for the GBM  and 45% for the Decision Tree. Given the higher out of sample accuracy of the Random Forest model I will use that model for the final predicitons and submission. These estimates were validated with the following predicitons on the final test set.
+Next we'll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-95% range for the SVM, 99% for the Random Forest,94%-96% for the GBM  and 45% for the Decision Tree. Given the higher out of sample accuracy of the Random Forest model I will use that model for the final predicitons and submission. These estimates were validated with the following predicitons on the final test set.
 
 
 ## SVM Predicitons
