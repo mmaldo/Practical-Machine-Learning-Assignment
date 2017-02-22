@@ -31,7 +31,7 @@ test<-read.csv('pml-testing.csv')
 
 Let's start by looking at the different columns.
 
-I will begin by eleiminating the variables with little data to use for predicting the class. I will do this to both the testing and the training set to prepare for the upcoming building and testing of the models.These columns inlucde a lot of blanks and "NA" entries. This is shown with the "str" and the "head" command below.
+I will begin by eliminating the variables with little data to use for predicting the class. I will do this to both the testing and the training set to prepare for the upcoming building and testing of the models. These columns include a lot of blanks and "NA" entries. This is shown with the "str" and the "head" command below.
 
 ```{r}
 head(train)
@@ -85,7 +85,7 @@ tidyTest <- subset(tidyTest, select = -c(max_roll_belt,max_picth_belt,min_roll_b
 
 ## Create training and test sets
 
-Next I will break up the testing set even further and create a new training and testing set using cross validation.This is bassically 1-fold cross validation. The smaller K should produce more bias. The previous testing set is then held out for after the model is built and validated.
+Next I will break up the testing set even further and create a new training and testing set using cross validation. This is basically 1-fold cross validation. The smaller K should produce more bias. The previous testing set is then held out for after the model is built and validated.
 
 ```{r}
 set.seed(353)
@@ -94,7 +94,7 @@ training <- tidyTrain[inTrain,]
 testing <- tidyTrain[-inTrain,]
 ```
  
- We'll first train a Decision Tree, SVM, Boosting using the GBM package, a parallelized Random Forest and a non parallelized Random Forest.
+We'll first train a Decision Tree, SVM, GBM, a parallelized Random Forest and a non-parallelized Random Forest.
  
 ```{r,cache=FALSE}
 set.seed(353)
@@ -125,9 +125,9 @@ cmSVM <- confusionMatrix(predSVM, testing$classe)
 cmSVM
 ```
 
-The decsion tree has rather poor performance so we'll move on to using an SVM,GBM or Random Forest for our final test set. The two Random Forests should have similar performance. The only difference between the parallelized Random Forest and Random Forest model are one uses parallel computation.
+The decision tree has rather poor performance so we'll move on to using an SVM, GBM or Random Forest for our final test set. The two Random Forests should have similar performance. The only difference between the parallelized Random Forest and Random Forest model is one uses parallel computation.
 
-Next we'll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-95% range for the SVM, 99% for the Random Forest,94%-96% for the GBM  and 45% for the Decision Tree. Given the higher out of sample accuracy of the Random Forest model I will use that model for the final predicitons and submission. These estimates were validated with the following predicitons on the final test set.
+Next, we'll predict on our validation set which we will submit for grading. I estimate the out of sample error will be in the 90-95% range for the SVM, 99% for the Random Forest, 94%-96% for the GBM and 45% for the Decision Tree. Given the higher out of sample accuracy of the Random Forest model I will use that model for the final predictions and submission. These estimates were validated with the following predictions on the final test set.
 
 
 ## SVM Predicitons
@@ -136,7 +136,7 @@ predict(modelSVM,tidyTest)
 
 ```
 
-This would also agree with the result of the quiz which is 19/20 correct.
+The SVM preformed quite well with 19 out of 20 correct.
 
 ## Random Forest Predicitons
 ```{r}
@@ -157,7 +157,7 @@ The Random Forest preformed quite well with 20 out of 20 correct.
 predict(modFitGBM,tidyTest)
 ```
 
-The GBM also ppreformed quite well with 20 out of 20 correct.
+The GBM also preformed quite well with 20 out of 20 correct.
 
 ## Decision Tree Predicitons
 
@@ -170,5 +170,5 @@ The Decision Tree preformed quite poorly with 8 out of 20 correct.
 
 ## Conclusion
 
-The Random Forest is the highest preforming model on the data set. Further work can be put into preprocessiong the data and reducing the dimensiaonlity of the data set to see if training time can be improved for the models that take long to train. The fastest training time with an above 90% accuracy was done by the Support Vector Machine and provides a good trade off of training time and accuracy.
+The Random Forest is the highest preforming model on the data set. Further work can be put into preprocessing the data and reducing the dimensionality of the data set to see if training time can be improved for the models that take long to train. The fastest training time with an above 90% accuracy was done by the Support Vector Machine and it provides a good trade off of training time and accuracy.
 
